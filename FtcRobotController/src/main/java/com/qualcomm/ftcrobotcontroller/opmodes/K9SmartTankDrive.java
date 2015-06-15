@@ -139,8 +139,8 @@ public class K9SmartTankDrive extends OpMode {
 
 		// scale the joystick value to make it easier to control
 		// the robot more precisely at slower speeds.
-		right = (float)scaleInput(right);
-		left =  (float)scaleInput(left);
+		right = (float)scaleInput(right) * gamepad1.right_trigger;
+		left =  (float)scaleInput(left) * gamepad1.right_trigger;
 		
 		// write the values to the motors
 		motorRight.setPower(right);
