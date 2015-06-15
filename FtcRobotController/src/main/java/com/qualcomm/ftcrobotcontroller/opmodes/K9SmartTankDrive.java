@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.hardware.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -70,6 +72,9 @@ public class K9SmartTankDrive extends OpMode {
 	DcMotor motorLeft;
 	Servo claw;
 	Servo arm;
+
+	Camera camera;
+	boolean isFlashOn;
 
 	/**
 	 * Constructor
@@ -111,6 +116,15 @@ public class K9SmartTankDrive extends OpMode {
 		// assign the starting position of the wrist and claw
 		armPosition = 0.2;
 		clawPosition = 0.2;
+
+		try {
+			camera = Camera.open();
+			Camera.Parameters params = camera.getParameters();
+		} catch (RuntimeException e) {
+			//Log.e("Camera Error. Failed to Open. Error: ", e.getMessage());
+		}
+
+		isFlashOn = false;
 	}
 
 	/*
@@ -145,6 +159,14 @@ public class K9SmartTankDrive extends OpMode {
 		// write the values to the motors
 		motorRight.setPower(right);
 		motorLeft.setPower(left);
+
+		if (gamepad1.guide)
+			isFlashOn = ! isFlashOn;
+
+		Camera.Parameters params = camera.getParameters();
+		params.setFlashMode(isFlashOn ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
+		camera.setParameters(params);
+		camera.startPreview();
 
 		// update the position of the arm.
 		if (gamepad1.a) {
@@ -201,6 +223,10 @@ public class K9SmartTankDrive extends OpMode {
         telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
 		telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
 		telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
+		if ( isFlashOn)
+		  telemetry.addData("flash", "flash: on");
+		else
+		  telemetry.addData("flash", "flash: off");
 	}
 
 	/*
