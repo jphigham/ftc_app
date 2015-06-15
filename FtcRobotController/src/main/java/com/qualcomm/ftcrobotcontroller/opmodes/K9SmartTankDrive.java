@@ -76,6 +76,8 @@ public class K9SmartTankDrive extends OpMode {
 	Camera camera;
 	boolean isFlashOn;
 
+	long lastTime;
+
 	/**
 	 * Constructor
 	 */
@@ -125,6 +127,8 @@ public class K9SmartTankDrive extends OpMode {
 		}
 
 		isFlashOn = false;
+
+		lastTime = System.nanoTime();
 	}
 
 	/*
@@ -227,6 +231,9 @@ public class K9SmartTankDrive extends OpMode {
 		  telemetry.addData("flash", "flash: on");
 		else
 		  telemetry.addData("flash", "flash: off");
+		long curTime = System.nanoTime();
+		telemetry.addData("Time", "loopTime: " + String.format("%.2f", (curTime-lastTime)/1000./1000.) + "ms");
+		lastTime = curTime;
 	}
 
 	/*
