@@ -436,6 +436,13 @@ public class FtcRobotControllerActivity extends Activity {
       parameters.putIntent(intentConfigure);
       startActivityForResult(intentConfigure, LaunchActivityConstantsList.FTC_CONFIGURE_REQUEST_CODE_ROBOT_CONTROLLER);
     }
+    else if (id == R.id.action_build_time) {
+        // Intent buildTimeIntent = new Intent("com.qualcomm.ftcrobotcontroller.FtcRobotControllerBuildTimeActivity.intent.action.Launch");
+        // Intent buildTimeIntent = new Intent(".FtcRobotControllerBuildTimeActivity.intent.action.Launch");
+        Intent buildTimeIntent = new Intent(getBaseContext(), FtcRobotControllerBuildTimeActivity.class);
+        startActivity(buildTimeIntent);
+        return true;
+    }
     else if (id == R.id.action_settings) {
       Intent settingsIntent = new Intent(FtcRobotControllerSettingsActivity.launchIntent);
       startActivityForResult(settingsIntent, LaunchActivityConstantsList.FTC_CONFIGURE_REQUEST_CODE_ROBOT_CONTROLLER);
